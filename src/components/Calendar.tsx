@@ -244,7 +244,7 @@ export const Calendar = () => {
             .map((sch: any, index: any) => (
               <div
                 key={index}
-                className="text-left mt-10 p-5 rounded-xl border-black border text-white bg-green-700"
+                className="w-64 text-left mt-10 p-5 rounded-xl border-black border text-white bg-green-700"
               >
                 <h3>Interview Scheduled!</h3>
                 <p>
