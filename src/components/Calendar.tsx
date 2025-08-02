@@ -184,7 +184,7 @@ export const Calendar = () => {
       });
     }
 
-    //setSchedule(schedule);
+    setSchedule(schedule);
     setOpen(false);
   };
 
