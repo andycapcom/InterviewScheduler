@@ -11,7 +11,7 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 const candidates = [
   {
     id: 1,
-    name: "John Doe",
+    name: "Roger Federrer",
     preferredSlots: [
       "2025-08-05T14:00:00",
       "2025-08-05T14:30:00",
@@ -23,7 +23,7 @@ const candidates = [
   },
   {
     id: 2,
-    name: "Jane Smith",
+    name: "Lionel Messi",
     preferredSlots: [
       "2025-08-06T14:00:00",
       "2025-08-06T14:30:00",
@@ -35,7 +35,7 @@ const candidates = [
   },
   {
     id: 3,
-    name: "Michael Johnson",
+    name: "Samuel Etoo",
     preferredSlots: [
       "2025-08-07T11:30:00",
       "2025-08-07T12:00:00",
@@ -52,11 +52,11 @@ const candidates = [
   },
 ];
 
-// Mock data for engineers' availability
+// Mock data for engineers
 const engineerAvailability = [
   {
     id: 1,
-    name: "Alex Chen",
+    name: "Michael Jordan",
     slots: [
       "2025-08-05T14:30:00",
       "2025-08-05T16:00:00",
@@ -69,7 +69,7 @@ const engineerAvailability = [
   },
   {
     id: 2,
-    name: "Sarah Williams",
+    name: "Serena Williams",
     slots: [
       "2025-08-07T12:30:00",
       "2025-08-06T14:30:00",
@@ -83,7 +83,7 @@ const engineerAvailability = [
   },
   {
     id: 3,
-    name: "David Kim",
+    name: "Halle Berry",
     slots: [
       "2025-08-05T16:30:00",
       "2025-08-06T14:30:00",
@@ -169,20 +169,28 @@ export const Calendar = () => {
   };
 
   const handleConfirmSlot = () => {
-    schedule.push({
-      candidate: selectedCandidate,
-      engineer: selectedEngineer,
-      date: selectedSlot,
-    });
-    setSchedule(schedule);
+    let theSchedule = schedule.find(
+      (sch: any) => sch.candidate.id == selectedCandidate.id
+    );
+
+    if (theSchedule) {
+      theSchedule.engineer = selectedEngineer;
+      theSchedule.date = selectedSlot;
+    } else {
+      schedule.push({
+        candidate: selectedCandidate,
+        engineer: selectedEngineer,
+        date: selectedSlot,
+      });
+    }
+
+    //setSchedule(schedule);
     setOpen(false);
   };
 
   const closeConfirm = () => {
     setOpen(false);
   };
-
-  console.log(schedule);
 
   return (
     <>
@@ -230,6 +238,32 @@ export const Calendar = () => {
             </select>
           </div>
         </div>
+        {selectedCandidate &&
+          schedule
+            .filter((sched: any) => sched.candidate.id == selectedCandidate.id)
+            .map((sch: any, index: any) => (
+              <div
+                key={index}
+                className="text-left mt-10 p-5 rounded-xl border-black border text-white bg-green-700"
+              >
+                <h3>Interview Scheduled!</h3>
+                <p>
+                  <strong>Candidate:</strong> {sch.candidate.name}
+                </p>
+                <p>
+                  <strong>Engineer:</strong> {sch.engineer.name}
+                </p>
+                <p>
+                  <strong>Time:</strong>{" "}
+                  {new Date(sch.date).toLocaleDateString("en-us", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+            ))}
         <section className="relative bg-stone-50 py-24">
           <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 overflow-x-auto">
             <div className="flex flex-col md:flex-row max-md:gap-3 items-center justify-between mb-5">
@@ -407,6 +441,7 @@ export const Calendar = () => {
                         Your selected slot: {selectedSlot}
                       </p>
                       <div>
+                        <p>Select an Engineer</p>
                         {(
                           (availableEngineer &&
                             availableEngineers.filter(
